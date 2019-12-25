@@ -62,7 +62,7 @@ class BiBoxCont:
         y = np.zeros(t_eval.size)
         spp_end = int(spp/dt)
         t_eval[0:spp_end], y[0:spp_end] = self.binary_signal(start_time = 0.0, end_time = spp, amp_level = 1.0, dt=dt, u1=True, u2=False)
-        t_eval[spp_end:], y[spp_end:] = self.binary_signal(start_time = spp, end_time = total_time, amp_level = 0.0, dt=dt, u1=True, u2=False)
+        t_eval[spp_end-1:-1], y[spp_end-1:-1] = self.binary_signal(start_time = spp, end_time = total_time, amp_level = 0.0, dt=dt, u1=True, u2=False)
         return (t_eval, y)
 
     def u2(self, spp=1.0, total_time=20.0, dt=1.0):
@@ -71,7 +71,7 @@ class BiBoxCont:
         spp_end = int(spp / dt)
         t_eval[0:spp_end], y[0:spp_end] = self.binary_signal(start_time=0.0, end_time=spp, amp_level=1.0, dt=dt,
                                                              u1=False, u2=True)
-        t_eval[spp_end:], y[spp_end:] = self.binary_signal(start_time=spp, end_time=total_time, amp_level=0.0, dt=dt,
+        t_eval[spp_end-1:-1], y[spp_end-1:-1] = self.binary_signal(start_time=spp, end_time=total_time, amp_level=0.0, dt=dt,
                                                            u1=False, u2=True)
         return (t_eval, y)
 b = BiBoxCont()
