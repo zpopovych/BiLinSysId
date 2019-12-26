@@ -111,7 +111,7 @@ ax21 = fig.add_subplot(grid[2, 0], sharey=ax11)
 ax22 = fig.add_subplot(grid[3, 0], sharey=ax11)
 
 ax1 = fig.add_subplot(grid[:2, 1])
-ax2 = fig.add_subplot(grid[2:, 1])
+ax2 = fig.add_subplot(grid[2:, 1], sharey=ax1)
 
 
 for spp in range (1,6):
