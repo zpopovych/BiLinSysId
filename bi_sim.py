@@ -85,9 +85,9 @@ print (b2.A)
 
 # Designing input sequence
 
-u = np.zeros((2, 5))
-u[0,0:5:1].fill(2.0)
-u[1,0:5:1].fill(1.0)
+u = np.zeros((2, 20))
+u[0,0:20:5].fill(2.0)
+u[1,0:20:5].fill(1.0)
 
 print ("Input sequence u:")
 print(u)
