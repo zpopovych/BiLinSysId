@@ -100,49 +100,19 @@ def inp_signal(spp, amp):
 
 b = BiBoxCont()
 
-#Plotting response
+#Plotting
 
-fig_out, (ax1, ax2) = plt.subplots(2,1,sharex=True)
+fig = plt.figure(figsize=(10, 10))
+grid = plt.GridSpec(4, 2, wspace=0.5, hspace=1)
 
-# Unit pulse
-# 1st input
-for i in range (1,6):
-    t, y = b.u1(spp = float(i))
-    ax1.plot(t, y, color='green')
+ax11 = fig.add_subplot(grid[0, 0])
+ax12 = fig.add_subplot(grid[1, 0], sharey=ax11)
+ax21 = fig.add_subplot(grid[2, 0], sharey=ax11)
+ax22 = fig.add_subplot(grid[3, 0], sharey=ax11)
 
-#2nd input
-for i in range (1,6):
-    t, y = b.u2(spp = float(i))
-    ax1.plot(t, y, color='red')
+ax1 = fig.add_subplot(grid[:2, 1])
+ax2 = fig.add_subplot(grid[2:, 1])
 
-grn_line = mlines.Line2D([],[],color='green', label='1st input')
-red_line = mlines.Line2D([],[],color='red', label='2nd input')
-ax1.legend(handles=[grn_line, red_line])
-
-ax1.set_title('Output signals \n(unit pulses)')
-ax1.set_ylabel('Step response')
-
-# Different size inputs
-# 1st input
-for i in range (1,6):
-    t, y = b.u1(spp = float(i))
-    ax2.plot(t, y, color='green')
-
-#2nd input
-for i in range (1,6):
-    t, y = b.u2(spp = float(i), amp_level = .5)
-    ax2.plot(t, y, color='red')
-
-grn_line = mlines.Line2D([],[],color='green', label='1st input (unit step)')
-red_line = mlines.Line2D([],[],color='red', label='2nd input (1/2 unit step)')
-ax2.legend(handles=[grn_line, red_line])
-ax2.set_title('(different size inputs)')
-ax2.set_ylabel('Step response')
-ax2.set_xlabel('Time(sec)')
-
-fig_out.show()
-
-fig_inp, (ax11, ax12, ax21, ax22) = plt.subplots(4,1,sharex=True, sharey=True)
 
 for spp in range (1,6):
     t, y = inp_signal(spp, 1)
@@ -156,6 +126,44 @@ ax11.set_title('Input signals \n (unit step)')
 ax21.set_title('(different steps)')
 ax22.set_xlabel('Time(sec)')
 
-fig_inp.show()
+# Unit pulse
+# 1st input
+for i in range (1,6):
+    t, y = b.u1(spp = float(i))
+    ax1.plot(t, y, color='green')
+
+#2nd input
+for i in range (1,6):
+    t, y = b.u2(spp = float(i))
+    ax1.plot(t, y, color='red')
+
+grn_line1 = mlines.Line2D([],[],color='green', label='1st input')
+red_line1 = mlines.Line2D([],[],color='red', label='2nd input')
+ax1.legend(handles=[grn_line1, red_line1])
+
+ax1.set_title('Output signals')
+ax1.set_ylabel('Step response')
+
+# Different size inputs
+# 1st input
+for i in range (1,6):
+    t, y = b.u1(spp = float(i))
+    ax2.plot(t, y, color='green')
+
+#2nd input
+for i in range (1,6):
+    t, y = b.u2(spp = float(i), amp_level = .5)
+    ax2.plot(t, y, color='red')
+
+grn_line2 = mlines.Line2D([],[],color='green', label='1st input \n(unit step)')
+red_line2 = mlines.Line2D([],[],color='red', label='2nd input \n(1/2 unit step)')
+ax2.legend(handles=[grn_line2, red_line2])
+
+#ax2.set_title('(different size inputs)')
+ax2.set_ylabel('Step response')
+ax2.set_xlabel('Time(sec)')
+
+#fig.savefig('BiLinCont_InpOut.png')
+fig.show()
 
 
