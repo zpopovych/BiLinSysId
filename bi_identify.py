@@ -18,15 +18,18 @@ def hankel_pairs ( v, h ):
 
 # Function to build Hankel matrix of the array of pairs
 
-def hankel_Y(Y, alpha, beta):
+def h_1(Y, alpha, beta):
     v = Y[ 1: alpha+1]
     h = Y[alpha+2 : alpha+beta+2]
     return hankel_pairs(v,h)
 
+def h_k(Y, alpha, k):
+    return Y[ k: alpha+k]
+
 # Function to identify the state matrix of the system Ac
 
-def identify_Ac(Y, alpha=5, beta=6, rnk=2):
-    H = hankel_Y(Y,alpha=alpha, beta=beta)
+def identify_Ac(Y, alpha=5, beta=6, rnk=2, k=1):
+    H = h_1(Y,alpha=alpha, beta=beta)
     #print('Size of H:', np.shape(H))
     n = np.linalg.matrix_rank(H)
     #print('Rank of H:',n)
@@ -42,7 +45,7 @@ def identify_Ac(Y, alpha=5, beta=6, rnk=2):
     #print('Size of U_dwn:', np.shape(U_dwn))
     #print('Rank of U_dwn:', np.linalg.matrix_rank(U_dwn))
 
-    A = U_up.transpose() @ U_dwn
+    A = np.conj(U_up.transpose()) @ U_dwn
     #print('Size of A:', np.shape(A))
     #print('Rank of A:', np.linalg.matrix_rank(A))
 
@@ -50,7 +53,7 @@ def identify_Ac(Y, alpha=5, beta=6, rnk=2):
 
 
 
-    return Ac, C, s
+    return Ac, C, s, U
 
 # Main program
 
@@ -71,15 +74,41 @@ beta=6
 #print('α*m= \n', alpha*m)
 #print('β*r= \n', beta*r)
 
-H1 = hankel_Y(Y1,alpha=5, beta=6)
+H1 = h_1(Y1, alpha=5, beta=6)
 
 #print('Hankel of Y1: H1= \n', H1)
 print('Size of H1 (should be 5 x 12):', np.shape(H1))
 #print('Rank of H1: \n', np.linalg.matrix_rank(H1))
 
-Ac, C, s  = identify_Ac(Y1)
+Ac, C, s, U1 = identify_Ac(Y1)
 
 print('Identified \n Ac: \n', Ac)
 print('C: \n', C)
 print('Sigma: \n', s)
 
+Y2 = np.load('ssp_2.npy')
+H2 = h_k(Y2, alpha=5, k=2)
+print('Identified \n H2: \n', H2)
+print('Size of H2 (should be 5 x 2):', np.shape(H2))
+
+B2 = np.conj(U1.transpose())@H2
+print('Identified \n B2: \n', B2)
+print('Size of B2:', np.shape(B2))
+
+Y3 = np.load('ssp_3.npy')
+H3 = h_k(Y3, alpha=5, k=3)
+B3 = np.conj(U1.transpose())@H3
+print('Identified \n B3: \n', B3)
+print('Size of B3:', np.shape(B3))
+
+Y4 = np.load('ssp_4.npy')
+H4 = h_k(Y3, alpha=5, k=4)
+B4 = np.conj(U1.transpose())@H4
+print('Identified \n B4: \n', B4)
+print('Size of B4:', np.shape(B4))
+
+Y5 = np.load('ssp_5.npy')
+H5 = h_k(Y3, alpha=5, k=5)
+B5 = np.conj(U1.transpose())@H5
+print('Identified \n B5: \n', B5)
+print('Size of B5:', np.shape(B5))
