@@ -112,3 +112,25 @@ H5 = h_k(Y3, alpha=5, k=5)
 B5 = np.conj(U1.transpose())@H5
 print('Identified \n B5: \n', B5)
 print('Size of B5:', np.shape(B5))
+
+
+C1 = B2[:2,:2]
+C2 = B3[:2,:2] - B2[:2,:2]
+C3 = B4[:2,:2] - B3[:2,:2]
+C4 = B5[:2,:2] - B4[:2,:2]
+
+rnk = 2
+
+C1_left = C1[:,1:]
+C1_right = C1[:,:-1]
+A1 = C1_right @ np.conj(C1_left.transpose())
+Nc1 = logm(A1[:rnk,:rnk])-Ac
+
+C2_left = C2[:,1:]
+C2_right = C2[:,:-1]
+A2 = C2_right @ np.conj(C2_left.transpose())
+Nc2 = logm(A2[:rnk,:rnk])-Ac
+
+
+print ('Nc1 = ', Nc1)
+print ('Nc2 = ', Nc2)
