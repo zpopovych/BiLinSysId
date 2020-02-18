@@ -163,7 +163,7 @@ ax2.legend(handles=[grn_line2, red_line2])
 ax2.set_ylabel('Step response')
 ax2.set_xlabel('Time(sec)')
 
-#fig.savefig('BiLinCont_InpOut.png')
+fig.savefig('BiLinCont_InpOut.png')
 fig.show()
 
 

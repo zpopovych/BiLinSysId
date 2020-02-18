@@ -53,7 +53,7 @@ def identify_Ac(Y, alpha=5, beta=6, rnk=2, k=1):
 
 
 
-    return Ac, C, s, U
+    return Ac, C, s, U, V
 
 # Main program
 
@@ -80,44 +80,65 @@ H1 = h_1(Y1, alpha=5, beta=6)
 print('Size of H1 (should be 5 x 12):', np.shape(H1))
 #print('Rank of H1: \n', np.linalg.matrix_rank(H1))
 
-Ac, C, s, U1 = identify_Ac(Y1)
+Ac, C, s, U1, V = identify_Ac(Y1)
+
+U1_up = U1[:-1, :3]
 
 print('Identified \n Ac: \n', Ac)
 print('C: \n', C)
 print('Sigma: \n', s)
 
+B1 = np.diag(s[:2])@V.T[:2, :2]
+
+print('Identified \n B1: \n', B1)
+
 Y2 = np.load('ssp_2.npy')
-H2 = h_k(Y2, alpha=5, k=2)
+H2 = Y2[2:5+2, :]
 print('Identified \n H2: \n', H2)
 print('Size of H2 (should be 5 x 2):', np.shape(H2))
 
-B2 = np.conj(U1.transpose())@H2
+B2 = np.conj(U1[:,:2].transpose())@H2
 print('Identified \n B2: \n', B2)
 print('Size of B2:', np.shape(B2))
 
 Y3 = np.load('ssp_3.npy')
-H3 = h_k(Y3, alpha=5, k=3)
-B3 = np.conj(U1.transpose())@H3
+H3 = Y3[3:5+3, :]
+B3 = np.conj(U1[:,:2].transpose())@H3
 print('Identified \n B3: \n', B3)
 print('Size of B3:', np.shape(B3))
 
 Y4 = np.load('ssp_4.npy')
-H4 = h_k(Y3, alpha=5, k=4)
-B4 = np.conj(U1.transpose())@H4
+H4 = Y4[4:5+4, :]
+B4 = np.conj(U1[:,:2].transpose())@H4
 print('Identified \n B4: \n', B4)
 print('Size of B4:', np.shape(B4))
 
 Y5 = np.load('ssp_5.npy')
-H5 = h_k(Y3, alpha=5, k=5)
-B5 = np.conj(U1.transpose())@H5
+H5 = Y5[5:5+5, :]
+B5 = np.conj(U1[:,:2].transpose())@H5
 print('Identified \n B5: \n', B5)
 print('Size of B5:', np.shape(B5))
 
+print('Size of s:', np.shape(s))
+print('Size of V:', np.shape(V))
 
-C1 = B2[:2,:2]
-C2 = B3[:2,:2] - B2[:2,:2]
-C3 = B4[:2,:2] - B3[:2,:2]
-C4 = B5[:2,:2] - B4[:2,:2]
+
+C1 = np.append(B1, B2 - B1, axis=1)
+print('Identified \n C1: \n', C1)
+print('Size of C1:', np.shape(C1))
+
+C2 = np.append(B1, B3 - B2, axis=1)
+print('Identified \n C2: \n', C2)
+print('Size of C2:', np.shape(C2))
+
+C3 = np.append(B1, B4 - B3, axis=1)
+print('Identified \n C3: \n', C3)
+print('Size of C3:', np.shape(C3))
+
+C4 = np.append(B1, B5 - B4, axis=1)
+print('Identified \n C4: \n', C4)
+print('Size of C4:', np.shape(C4))
+
 
 rnk = 2
 
